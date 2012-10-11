@@ -13,13 +13,11 @@ net.createServer(function (s) {
 
   ask('What... is your name?', function (name) {
     ask('What... is your quest?', function (quest) {
-      var question;
+      var question = 'What... is your favourite colour?';
       if (/Arthur/i.test(name)) {
         question = 'What... is the air-speed velocity of unlaiden swallow?';
       } else if (/Robin/i.test(name)) {
         question = 'What... is the capital of Assyria?';
-      } else {
-        question = 'What... is your favourite colour?';
       }
 
       ask(question, function (answer) {
