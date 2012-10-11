@@ -8,9 +8,6 @@ net.createServer(function (s) {
 
   function ask(key, question) {
     return function (answers, cb) {
-      if (typeof question === 'function') {
-        question = question(answers);
-      }
       s.write(question + '\n');
       s.once('data', function (answer) {
         answers[key] = answer;
@@ -19,22 +16,23 @@ net.createServer(function (s) {
     };
   }
 
-  function extraQuestion(answers) {
+  function extraQuestion(answers, cb) {
     var name = answers.name;
+    var question = 'What... is your favourite colour?';
     if (/Arthur/i.test(name)) {
-      return 'What... is the air-speed velocity of unlaiden swallow?';
+      question = 'What... is the air-speed velocity of unlaiden swallow?';
     } else if (/Robin/i.test(name)) {
-      return 'What... is the capital of Assyria?';
+      question = 'What... is the capital of Assyria?';
     }
-    return 'What... is your favourite colour?';
-  }
+    ask('extra', question)(answers, cb);
+  };
 
   async.waterfall([
     function (cb) { cb(null, { name: '', quest: '', extra: '' }); },
     ask('name',  'What... is your name?'),
     ask('quest', 'What... is your quest?'),
-    ask('extra', extraQuestion)
-  ], function () {
+    extraQuestion
+  ], function (err, answers) {
     s.end('Go on. Off you go.\n');
   });
 }).listen(1975);
