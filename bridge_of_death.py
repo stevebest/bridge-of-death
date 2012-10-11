@@ -13,5 +13,5 @@ if 'arthur' in name.lower():
 elif 'robin' in name.lower():
 	print 'What... is the capital of Assyria?'
 else:
-	print 'What... is your favorite color?'
+	print 'What... is your favourite colour?'
 last_answer = raw_input()
