@@ -2,20 +2,27 @@ var net = require('net')
 
 net.createServer(function (s) {
   s.setEncoding('utf-8');
-  s.write('Stop. Who would cross the Bridge of Death must answer me\nthese questions three,\nere the other side he see.\n');
+  s.write('Stop.\nWho would cross the Bridge of Death must answer me\nthese questions three, ere the other side he see.\n');
 
-  s.write('What... is your name?\n');
-  s.once('data', function (name) {
-    s.write('What... is your quest?\n');
-    s.once('data', function (quest) {
+  function ask(question, cb) {
+    s.write(question + '\n');
+    s.once('data', function (answer) {
+      cb(answer);
+    })
+  }
+
+  ask('What... is your name?', function (name) {
+    ask('What... is your quest?', function (quest) {
+      var question;
       if (/Arthur/i.test(name)) {
-        s.write('What... is the air-speed velocity of unlaiden swallow?\n');
+        question = 'What... is the air-speed velocity of unlaiden swallow?';
       } else if (/Robin/i.test(name)) {
-        s.write('What... is the capital of Assyria?\n');
+        question = 'What... is the capital of Assyria?';
       } else {
-        s.write('What... is your favourite colour?\n');
+        question = 'What... is your favourite colour?';
       }
-      s.once('data', function (answer) {
+
+      ask(question, function (answer) {
         s.end('Go on. Off you go.\n');
       });
     });
