@@ -15,3 +15,5 @@ elif 'robin' in name.lower():
 else:
 	print 'What... is your favourite colour?'
 last_answer = raw_input()
+
+print 'Go on. Off you go.'
